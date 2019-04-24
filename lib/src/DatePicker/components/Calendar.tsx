@@ -28,11 +28,13 @@ export interface CalendarProps extends WithUtilsProps, WithStyles<typeof styles,
   onChange: (date: MaterialUiPickersDate, isFinish?: boolean) => void;
   disablePast?: boolean;
   disableFuture?: boolean;
+  enableSwitcher?: boolean;
   leftArrowIcon?: React.ReactNode;
   rightArrowIcon?: React.ReactNode;
   renderDay?: RenderDay;
   allowKeyboardControl?: boolean;
   shouldDisableDate?: (day: MaterialUiPickersDate) => boolean;
+  calendarRef?: any;
 }
 
 export interface CalendarState {
@@ -106,6 +108,8 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
 
   public handleChangeMonth = (newMonth: MaterialUiPickersDate, slideDirection: SlideDirection) => {
     this.setState({ currentMonth: newMonth, slideDirection });
+
+    this.props.onChange(newMonth);
   };
 
   public validateMinMaxDate = (day: MaterialUiPickersDate) => {
@@ -235,7 +239,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
 
   public render() {
     const { currentMonth, slideDirection } = this.state;
-    const { classes, allowKeyboardControl } = this.props;
+    const { classes, allowKeyboardControl, enableSwitcher } = this.props;
 
     return (
       <React.Fragment>
@@ -249,6 +253,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
           rightArrowIcon={this.props.rightArrowIcon}
           disablePrevMonth={this.shouldDisablePrevMonth()}
           disableNextMonth={this.shouldDisableNextMonth()}
+          enableSwitcher={enableSwitcher}
         />
 
         <SlideTransition
@@ -277,4 +282,4 @@ export const styles = (theme: Theme) => ({
 export default withStyles(styles, {
   name: 'MuiPickersCalendar',
   withTheme: true,
-})(withUtils()(Calendar));
+})(withUtils()((props: CalendarProps) => <Calendar {...props} ref={props.calendarRef} />));

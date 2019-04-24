@@ -19,6 +19,7 @@ export interface CalendarHeaderProps extends WithUtilsProps, WithStyles<typeof s
   rightArrowIcon?: React.ReactNode;
   disablePrevMonth?: boolean;
   disableNextMonth?: boolean;
+  enableSwitcher?: boolean;
   slideDirection: SlideDirection;
 }
 
@@ -33,6 +34,7 @@ export const CalendarHeader: React.SFC<CalendarHeaderProps> = ({
   disableNextMonth,
   utils,
   slideDirection,
+  enableSwitcher,
 }) => {
   const rtl = theme.direction === 'rtl';
 
@@ -41,33 +43,35 @@ export const CalendarHeader: React.SFC<CalendarHeaderProps> = ({
 
   return (
     <div>
-      <div className={classes.switchHeader}>
-        <IconButton
-          disabled={disablePrevMonth}
-          onClick={selectPreviousMonth}
-          className={classes.iconButton}
-        >
-          {rtl ? rightArrowIcon : leftArrowIcon}
-        </IconButton>
+      {enableSwitcher && (
+        <div className={classes.switchHeader}>
+          <IconButton
+            disabled={disablePrevMonth}
+            onClick={selectPreviousMonth}
+            className={classes.iconButton}
+          >
+            {rtl ? rightArrowIcon : leftArrowIcon}
+          </IconButton>
 
-        <SlideTransition
-          slideDirection={slideDirection}
-          transKey={currentMonth.toString()}
-          className={classes.transitionContainer}
-        >
-          <Typography align="center" variant="body1">
-            {utils.getCalendarHeaderText(currentMonth)}
-          </Typography>
-        </SlideTransition>
+          <SlideTransition
+            slideDirection={slideDirection}
+            transKey={currentMonth.toString()}
+            className={classes.transitionContainer}
+          >
+            <Typography align="center" variant="body1">
+              {utils.getCalendarHeaderText(currentMonth)}
+            </Typography>
+          </SlideTransition>
 
-        <IconButton
-          disabled={disableNextMonth}
-          onClick={selectNextMonth}
-          className={classes.iconButton}
-        >
-          {rtl ? leftArrowIcon : rightArrowIcon}
-        </IconButton>
-      </div>
+          <IconButton
+            disabled={disableNextMonth}
+            onClick={selectNextMonth}
+            className={classes.iconButton}
+          >
+            {rtl ? leftArrowIcon : rightArrowIcon}
+          </IconButton>
+        </div>
+      )}
 
       <div className={classes.daysHeader}>
         {utils.getWeekdays().map((day, index) => (
@@ -91,6 +95,7 @@ export const CalendarHeader: React.SFC<CalendarHeaderProps> = ({
   rightArrowIcon: PropTypes.node,
   disablePrevMonth: PropTypes.bool,
   disableNextMonth: PropTypes.bool,
+  enableSwitcher: PropTypes.bool,
   slideDirection: PropTypes.oneOf(['right', 'left']).isRequired,
   innerRef: PropTypes.any,
 };
@@ -100,6 +105,7 @@ CalendarHeader.defaultProps = {
   rightArrowIcon: <ArrowRightIcon />,
   disablePrevMonth: false,
   disableNextMonth: false,
+  enableSwitcher: true,
 };
 
 export const styles = (theme: Theme) =>
