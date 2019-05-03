@@ -47,7 +47,7 @@
     "eject": "react-scripts eject",
     "docs:generate": "node scripts/docgen",
     "backers:generate": "node scripts/generate-backers",
-    "deploy": "npm run docs:generate && npm run backers:generate && npm run build && firebase deploy"
+    "deploy": "npm run docs:generate && npm run backers:generate && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
