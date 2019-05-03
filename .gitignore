@@ -3,7 +3,7 @@ node_modules
 
 # build
 dist
-build
+# build
 
 # logs
 logs

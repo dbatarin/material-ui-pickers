@@ -28,6 +28,7 @@ export interface CalendarProps extends WithUtilsProps, WithStyles<typeof styles,
   onChange: (date: MaterialUiPickersDate, isFinish?: boolean) => void;
   disablePast?: boolean;
   disableFuture?: boolean;
+  disabledDates?: MaterialUiPickersDate[],
   enableSwitcher?: boolean;
   leftArrowIcon?: React.ReactNode;
   rightArrowIcon?: React.ReactNode;
@@ -140,9 +141,10 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
   };
 
   public shouldDisableDate = (day: MaterialUiPickersDate) => {
-    const { disablePast, disableFuture, shouldDisableDate, utils } = this.props;
+    const { disablePast, disableFuture, shouldDisableDate, utils, disabledDates } = this.props;
 
     return Boolean(
+      disabledDates && disabledDates.some((date) => utils.isSameDay(date, day)) ||
       (disableFuture && utils.isAfterDay(day, utils.date())) ||
         (disablePast && utils.isBeforeDay(day, utils.date())) ||
         this.validateMinMaxDate(day) ||
